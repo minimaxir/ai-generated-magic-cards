@@ -28,4 +28,4 @@ with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
     w = csv.writer(f)
     w.writerow(["text"])
     for card in card_dict.values():
-        w.writerow([card])
+        w.writerow([card.replace("[", "").replace("]", "")])
