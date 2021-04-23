@@ -4,7 +4,7 @@ import csv
 INPUT_PATH = "/Users/maxwoolf/Downloads/AllPrintingsCSVFiles/cards.csv"
 OUTPUT_PATH = "/Users/maxwoolf/Downloads/AllPrintingsCSVFiles/cards_formated.csv"
 TEMPLATE = Template(
-    """{{ c.name }}  {{ c.manaCost }}
+    """{{ c.name }}{% if c.manaCost %} {{ c.manaCost }}{% endif %}
 {{ c.type }}
 {{ c.text }}{% if c.power %}
 {{ c.power }}/{{ c.toughness }}{% endif %}{% if c.loyalty %}
