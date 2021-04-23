@@ -2,7 +2,7 @@ from jinja2 import Template
 import csv
 
 INPUT_PATH = "/Users/maxwoolf/Downloads/AllPrintingsCSVFiles/cards.csv"
-OUTPUT_PATH = "/Users/maxwoolf/Downloads/AllPrintingsCSVFiles/cards_formatted.csv"
+OUTPUT_PATH = "/Users/maxwoolf/Downloads/AllPrintingsCSVFiles/cards_formated.csv"
 TEMPLATE = Template(
     """{{ c.name }}  {{ c.manaCost }}
 {{ c.type }}
@@ -14,10 +14,18 @@ Loyalty: {{ c.loyalty }}{% endif %}{% if c.flavorText %}
 """
 )
 
-with open(INPUT_PATH, "r", encoding="utf-8") as f1:
-    r = csv.DictReader(f1)
-    with open(OUTPUT_PATH, "w", encoding="utf-8") as f2:
-        w = csv.writer(f2)
-        w.writerow(["text"])
-        for row in r:
-            w.writerow([TEMPLATE.render(c=row)])
+card_dict = {}
+
+with open(INPUT_PATH, "r", encoding="utf-8") as f:
+    r = csv.DictReader(f)
+    for card in r:
+        # Only parse card once per card name.
+        if card["name"] not in card_dict:
+            card_dict[card["name"]] = TEMPLATE.render(c=card)
+
+
+with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
+    w = csv.writer(f)
+    w.writerow(["text"])
+    for card in card_dict.values():
+        w.writerow([card])
