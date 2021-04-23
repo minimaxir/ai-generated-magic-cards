@@ -1,5 +1,4 @@
 import csv
-import re
 from random import shuffle
 
 REPETITIONS = 10
@@ -17,12 +16,12 @@ OUTPUT_PATH = "/Users/maxwoolf/Downloads/AllPrintingsCSVFiles/cards_encoded.csv"
 
 
 # https://docs.python.org/3/library/re.html#re.sub
-def integer_to_carets(matchobj):
-    return "^" * int(matchobj.group(0))
+# def integer_to_carets(matchobj):
+#     return "^" * int(matchobj.group(0))
 
 
 def not_invalid(card):
-    return card["type"] != "Vanguard" and card["name"] != "Gleemax"
+    return card["type"] != "Vanguard"
 
 
 card_dict = {}
@@ -43,5 +42,5 @@ with open(OUTPUT_PATH, "w", encoding="utf-8") as f:
         for _ in range(REPETITIONS):
             shuffle(FIELDS)
             card_enc = "".join([f"<|{k}|>{card[k]}" for k in FIELDS])
-            card_enc = re.sub(r"\d+", integer_to_carets, card_enc)
+            # card_enc = re.sub(r"\d+", integer_to_carets, card_enc)
             w.writerow([card_enc.replace("[", "").replace("]", "")])
