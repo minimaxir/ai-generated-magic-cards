@@ -1,1 +1,4 @@
 *.csv
+*.bin
+trained_model/
+.DS_Store
