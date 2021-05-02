@@ -1,5 +1,5 @@
 *.csv
 *.bin
-trained_model/
+trained_model*/
 tests/
 .DS_Store
