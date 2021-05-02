@@ -18,7 +18,7 @@ pip3 install jinja2
 
 ## mtgjson_parser.py
 
-`mtgjson_encoder.py` is a lighter-templating that renders the cards in a style similar to that of Scryfall. Although you can train AI on it and the output will be more interpretable without decoding, it's less flexible.
+`mtgjson_encoder.py` is a lighter-templating that renders the cards in a style similar to that of [Scryfall](https://scryfall.com/). Although you can train AI on it and the output will be more interpretable without decoding, it's less flexible.
 
 Examples of cards with this encoding:
 
@@ -50,7 +50,7 @@ Loyalty: 6
 
 ## mtgencoder.py
 
-`mtgjson_encoder.py` encodes Magic cards into a similar format as mtgjson, although only in two major ways:
+`mtgjson_encoder.py` encodes Magic cards into a similar format as mtgencode, although only in two major ways:
 
 1. Cards are encoded with the following sections/keys: `<|name|>`, `<|manaCost|>`, `<|type|>`, `<|text|>`, `<|power|>`, `<|toughness|>`, `<|loyalty|>`. These keys are randomized, allowing the cards to be generated in any order. All the encoded cards are repeated in a different order for `REPETITION` times (10 in the script); all repetitions are shuffled again to mitigate data leakage.
 2. If the card name is present in the text; it is replaced with a `~`; this is mostly to prevent data leakage where the `<|text|>` appears before the `<|name|>`
@@ -72,6 +72,10 @@ Examples of encoded cards:
 −2: Return target creature to its owner's hand.
 −8: You get an emblem with "Whenever an opponent casts their first spell each turn, counter that spell."<|name|>Jace, Unraveler of Secrets<|toughness|><|type|>Legendary Planeswalker — Jace<|manaCost|>{3}{U}{U}<|power|>
 ```
+
+## The AI Model
+
+The model itself takes advantage of efficient tokenization and `aitextgen`'s schema capabilities. The keys such as `<|name|>` are explicitly added tokens to the tokeniziation; therefore they get their own token_id and are faster to explicitly detect/generate without confounding. These added tokens are also `schema_tokens`, which when used with `generate(schema=True)`, returns a dictionary with each field as its own key, allowing it to be passed to a `jinja2` template for decoding without additional decoding.
 
 ## Maintainer/Creator
 
